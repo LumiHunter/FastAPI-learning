@@ -1,6 +1,6 @@
 import uvicorn
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Header
 
 from typing import Optional
 from enum import Enum
@@ -10,6 +10,10 @@ app = FastAPI()
 class UserLevel(str, Enum):
     master = "마스터"
     member = "멤버"
+
+@app.get("/header")
+def get_headers(x_token: str = Header(None, title="토큰")):
+    return {"X-Token": x_token}    # X-는 사용자 정의 헤더라는 뜻.
 
 @app.get("/users/{user_id}")
 def get_user(user_id: int):    # URL은 전부 문자열이기 때문에 타입 힌트 int 작성
